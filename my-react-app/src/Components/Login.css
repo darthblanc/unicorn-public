@@ -1,0 +1,78 @@
+
+.loginEmailLabel {
+    font-size: medium;
+    position: relative;
+    left: 60%;
+    top: -65px;
+    height: 30px;
+    font-family: 'Courier New', Courier, monospace;
+    color: red;
+}
+
+.loginEmail {
+    font-size: medium;
+    position: relative;
+    left: 80%;
+    top: -65px;
+    height: 30px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.loginPasswordLabel {
+    font-size: medium;
+    position: relative;
+    left: 60%;
+    top: -30px;
+    height: 30px;
+    font-family: 'Courier New', Courier, monospace;
+    color: red;
+}
+
+.loginPassword {
+    font-size: medium;
+    position: relative;
+    left: 75%;
+    height: 30px;
+    top: -30px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.signInButton {
+    padding: auto;
+    color: white;
+    background-color: purple;
+    width: 550px;
+    left: 50%;
+    height: 50px;
+    top: 20px;
+    font-size: large;
+    font-family: 'Courier New', Courier, monospace;
+    position: relative;
+    text-align: center;
+    /* display: flex; */
+}
+
+.signUpText{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: medium;
+    position: relative;
+    top: 30px;
+    left: 375px;
+}
+
+.signUpLinkText {
+    color: purple;
+}
+
+.forgotPassword{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: medium;
+    position: relative;
+    top: 30px;
+    left: 450px;
+}
+
+
+.forgotPasswordLinkText {
+    color: purple;
+}

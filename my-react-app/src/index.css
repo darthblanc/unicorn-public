@@ -1,0 +1,222 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+canvas {
+  position: fixed;
+  left: 0%;
+  top: 0%;
+  z-index: -1;
+  /* cursor: m; */
+}
+
+a {
+  font-weight: 500;
+  color: hsl(266, 42%, 52%);
+  text-decoration: inherit;
+}
+a:hover {
+  color: hsla(266, 42%, 52%, 0.315);
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+.WorkSpace {
+  position: absolute;
+  top: 0%;
+
+}
+.LoginUI {
+  position: fixed;
+  left:30%;
+  padding: 2%;
+  width: 40%;
+  border-radius: 20px;
+  height: 30%;
+  border-color: black;
+  border-style: solid;
+  background-color: white;
+  top: 20%;
+}
+
+
+.Tools {
+  background-color: white;
+  user-select: none;
+  position: fixed;
+  width: 200px;
+  height: 500px;
+  box-shadow: #1a1a1a 0px 0px 5px;
+  border-style:solid;
+  border-color: black;
+  border-width: 1px;
+  z-index: 100;
+}
+
+#fileDropdown {
+  position: fixed;
+  background-color: white;
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  width: 300px;
+  box-shadow: #1a1a1a 0px 0px 5px;
+}
+
+#fileDropdown button {
+  width: 100%;
+}
+
+#LayersScrollable {
+  overflow: scroll;
+  width:  400px;
+  height: 700px; 
+
+}
+.Layers {
+  position: fixed;
+  box-shadow: #1a1a1a 0px 0px 5px;
+  user-select: none;
+  background-color: white;
+  right: 0%;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  width:  400px;
+
+}
+
+.indivLayer {
+  border-style: inset;
+  background-color: white;
+  overflow:hidden;
+}
+
+.indivLayer button {
+  top: 0%;
+  float: right;
+  padding: 0px;
+  width:  20px;
+  height: 20px;
+  padding: 0px;
+  border-color: black;
+  border-style: solid;
+  font-size: 15px;
+}
+.topBarUI {
+  position: fixed;
+  box-shadow: #1a1a1a 0px 0px 5px;
+  user-select: none;
+  background-image: linear-gradient( rgb(154, 161, 247), rgb(201, 100, 201));
+  width: 100%;
+  background-color: #1a1a1a;
+  top: 0%;
+}
+
+.buttonlabel {
+  border-radius: 0px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  margin: 0;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  color: black;
+  background-color: #f9f9f9;
+  transition: border-color 0.25s;
+  width: 100%;
+}
+.buttonlabel:hover {
+  background-color: gainsboro;
+}
+
+.DragBar {
+  border-style: none;
+  background-image: linear-gradient( rgb(154, 161, 247), rgb(201, 100, 201));
+  height: 30px;
+  color: white;
+  font-size: 1.25em;
+  font-weight: 500;
+  font-family: inherit;
+  width: 100%;
+}
+
+.dragBarButton {
+  top: 0%;
+  float: right;
+  padding: 0px;
+  width:  20px;
+  height: 20px;
+  padding: 0px;
+  color: white;
+  border-style: none;
+  height: 30px;
+  width: 30px;
+  background-image: linear-gradient(rgb(255, 130, 178), rgb(255, 190, 194));
+  font-size: 15px;
+}
+
+.dragBarButton:hover {
+  border-color: black;
+  border-style: solid;
+  border-color: black;
+  background-image: linear-gradient( rgb(134, 69, 255), rgb(244, 67, 250));
+  font-size: 15px;
+}
+
+button {
+  border-radius: 0px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  background-color: gainsboro;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: hsl(266, 72%, 72%);
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+  Button:hover {
+    color: hsl(266, 72%, 72%);
+  }
+  .menu {
+    background-color: rebeccapurple !important;
+  }
+}

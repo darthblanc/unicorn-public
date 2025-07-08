@@ -1,0 +1,137 @@
+
+.welcome {
+    font-size: x-large;
+    position: relative;
+    top: -100px;
+    left: 70%;
+}
+
+.firstNameLabel {
+    font-size: medium;
+    position: relative;
+    left: 60%;
+    top: -90px;
+    height: 30px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.firstName {
+    font-size: medium;
+    position: relative;
+    left: 71%;
+    top: -90px;
+    height: 30px;
+    width: 230px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.lastNameLabel {
+    font-size: medium;
+    position: relative;
+    left: 60%;
+    top: -70px;
+    height: 30px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.lastName {
+    font-size: medium;
+    position: relative;
+    left: 73%;
+    top: -70px;
+    height: 30px;
+    width: 230px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.emailLabel {
+    font-size: medium;
+    position: relative;
+    left: 60%;
+    top: -50px;
+    height: 30px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.email {
+    font-size: medium;
+    position: relative;
+    left: 80%;
+    top: -50px;
+    height: 30px;
+    width: 230px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.passwordLabel {
+    font-size: medium;
+    position: relative;
+    left: 60%;
+    top: -30px;
+    height: 30px;
+    font-family: 'Courier New', Courier, monospace;
+    /* color: red; */
+}
+
+.password {
+    font-size: medium;
+    position: relative;
+    left: 75%;
+    top: -30px;
+    height: 30px;
+    width: 230px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.passwordAgainLabel {
+    font-size: medium;
+    position: relative;
+    left: 60%;
+    top: -10px;
+    height: 30px;
+    font-family: 'Courier New', Courier, monospace;
+    /* color: red; */
+}
+
+.passwordAgain {
+    font-size: medium;
+    position: relative;
+    left: 76.5%;
+    height: 30px;
+    top: -10px;
+    width: 230px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.signUpButton {
+    padding: auto;
+    color: white;
+    background-color: purple;
+    width: 550px;
+    left: 50%;
+    height: 50px;
+    top: 20px;
+    font-size: large;
+    font-family: 'Courier New', Courier, monospace;
+    position: relative;
+    text-align: center;
+    /* display: flex; */
+}
+
+.signIn{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: medium;
+    position: relative;
+    top: 30px;
+    left: 375px;
+}
+
+.signInLinkText {
+    color: purple;
+}
+
+.invalidDetailsText{
+    color: red;
+    position: relative;
+    left: 400px;
+}
