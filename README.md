@@ -1,5 +1,5 @@
 <h1>Unicorn Image Editor</h1>
-Repository for Unicorn Image Editor
+Public Repository (version) for Unicorn Image Editor which I and building with <a href="https://github.com/j-cow2"> Xavier </a>
 <h2>React Setup:</h2>
 Ensure that NPM and node.js are installed with the following commands:
 
