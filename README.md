@@ -2,7 +2,7 @@
 
 A high-performance, web-based drawing application built with React and Firebase. Unicorn leverages JavaScript Web Workers for enhanced performance and features seamless autosaving to create an uninterrupted creative experience.
 
-**Developed by:** [darthblanc](https://github.com/darthblanc) and [Xavier](https://github.com/j-cow2)
+**Developed by:** [darthblanc](https://github.com/darthblanc) and [j-cow2](https://github.com/j-cow2)
 
 ## ✨ Features
 
