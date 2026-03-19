@@ -1,227 +1,121 @@
-# 🦄 Unicorn Image Editor
+# Unicorn
 
-A high-performance, web-based drawing application built with React and Firebase. Unicorn leverages JavaScript Web Workers for enhanced performance and features seamless autosaving to create an uninterrupted creative experience.
+> ⚠️ This is the **public version** of Unicorn. Some features and source files from the private repository have been omitted.
 
-**Developed by:** [darthblanc](https://github.com/darthblanc) and [j-cow2](https://github.com/j-cow2)
+A web-based drawing and art application with a focus on performance. The hardest problems here weren't the UI — they were keeping the canvas responsive under heavy stroke data, making erasing fast without freezing the main thread, and ensuring drawings survive a page reload exactly as they were left.
 
-## ✨ Features
+**Built by:** [darthblanc](https://github.com/darthblanc) and [j-cow2](https://github.com/j-cow2)
 
-- **High-Performance Canvas**: Utilizes JavaScript Web Workers for smooth, responsive drawing operations
-- **Automatic Saving**: Intelligent autosave system preserves your work without interruption
-- **Firebase Integration**: Cloud-based authentication, storage, and real-time database functionality
-- **Modern React Architecture**: Built with Vite for fast development and optimized production builds
-- **Responsive Design**: Works seamlessly across different devices and screen sizes
+> **Stack:** React · Vite · Firebase (Auth, Firestore, Storage) · Web Workers · Canvas API · Node.js
 
-## 🚀 Quick Start
+---
 
-### Prerequisites
+## Engineering Highlights
 
-Ensure you have Node.js and npm installed on your system:
+### Stroke Compression — Custom Delta/Diff Encoding
 
-```bash
-sudo apt-get install nodejs
-sudo apt-get install npm
-```
+Raw canvas strokes are dense: every pointer event produces an (x, y) coordinate, and a single drawing session can generate tens of thousands of points. Storing and retrieving that naively from Firestore would be slow and expensive.
 
-### Installation
+Unicorn uses a **custom delta encoding scheme** — rather than storing absolute coordinates for every point, each stroke is encoded as a series of offsets from the previous point. This significantly reduces the payload size stored in Firestore, making saves faster and reads cheaper.
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/darthblanc/unicorn-public.git
-   cd unicorn-public
-   ```
+On load, strokes are decoded and **redrawn precisely** — the original drawing is reconstructed exactly, not approximated.
 
-2. **Navigate to the React app directory**
-   ```bash
-   cd my-react-app
-   ```
+### Quadtree Erasing — Offloaded to a Web Worker
 
-3. **Install dependencies**
-   ```bash
-   npm install
-   ```
+Erasing requires checking every stored stroke point against the eraser's hit area. For large drawings this is an expensive spatial query — running it on the main thread would block rendering and make the UI feel frozen.
 
-4. **Install Firebase CLI** (if not already installed)
-   ```bash
-   npm install firebase
-   ```
+Unicorn solves this by:
 
-### Development Setup
+1. **Building a quadtree** over all stroke points — a spatial index that makes hit-testing O(log n) instead of O(n)
+2. **Running the quadtree queries and redrawing entirely inside a Web Worker** — keeping the main thread free for user input and UI updates
+3. **Posting results back to the main thread** only when the erase operation is complete
 
-1. **Start the development server**
-   ```bash
-   npm run dev
-   ```
+This means erasing stays smooth regardless of drawing complexity.
 
-2. **Open in browser**
-   - Once Vite loads, press `o` followed by Enter
-   - The application will automatically open in your default browser
+### Autosaving
 
-## 🔥 Firebase Configuration
+Drawings are automatically persisted to Firestore on a timed interval without interrupting the user. The autosave system:
 
-### Initial Setup
+- Compresses the current stroke state using delta encoding before writing
+- Uses Firebase Storage for any raster assets
+- Fires via event listeners on the file menu so save state is always reflected in the UI
 
-1. **Login to Firebase CLI**
-   ```bash
-   firebase login
-   ```
+### Firebase Auth + File Management
 
-2. **Initialize Firebase emulators**
-   ```bash
-   firebase init
-   ```
-   Follow the prompts to configure:
-   - Select emulators you need (Authentication, Firestore, Storage, Functions)
-   - Configure hosting settings
-   - Set up database rules
+Each user has an isolated workspace. Firebase Authentication gates access to drawings, and Firestore listeners keep the file menu in sync with live updates — opening, renaming, or deleting a file reflects immediately without a page refresh.
 
-3. **Start Firebase emulators**
-   ```bash
-   firebase emulators:start
-   ```
+---
 
-### Configuration File Setup
-
-1. Navigate to the [Firebase Console](https://console.firebase.google.com)
-2. Go to Project Settings → General
-3. Scroll to "Your apps" section
-4. Select "unicorn-web"
-5. Copy the configuration object
-
-6. Create the configuration file:
-   ```bash
-   mkdir my-react-app/hidden
-   touch my-react-app/hidden/firebaseConfig.json
-   ```
-
-7. Paste the configuration into `firebaseConfig.json` and format as valid JSON:
-   ```json
-   {
-     "apiKey": "your-api-key",
-     "authDomain": "your-auth-domain",
-     "projectId": "your-project-id",
-     "storageBucket": "your-storage-bucket",
-     "messagingSenderId": "your-messaging-sender-id",
-     "appId": "your-app-id"
-   }
-   ```
-
-### Managing Emulators
-
-To modify enabled emulators:
-- Edit `my-react-app/firebase.json`
-- Add or remove emulator configurations as needed
-
-## 📁 Project Structure
+## Architecture
 
 ```
 unicorn-public/
-├── my-react-app/         # React frontend application
-│   ├── src/              # Source files
-│   ├── public/           # Static assets
-│   ├── hidden/           # Firebase configuration (gitignored)
-│   └── firebase.json     # Firebase emulator configuration
-├── node-backend/         # Backend services
-└── README.md             # This file
+├── my-react-app/
+│   ├── src/
+│   │   ├── canvas/        # Drawing engine, stroke management, delta encoding
+│   │   ├── workers/       # Web Worker — quadtree construction, erase ops, redraw
+│   │   ├── firebase/      # Auth, Firestore, Storage integration
+│   │   ├── components/    # UI — toolbar, file menu, canvas wrapper
+│   │   └── hooks/         # Autosave, file listeners, auth state
+│   └── firebase.json      # Emulator config
+└── node-backend/          # Supporting backend services
 ```
 
-## 🛠️ Tech Stack
+---
 
-### Frontend
-- **React** - UI framework
-- **Vite** - Build tool and dev server
-- **JavaScript Web Workers** - Multi-threaded canvas operations
+## Getting Started
 
-### Backend & Services
-- **Firebase Authentication** - User authentication
-- **Firestore** - Real-time NoSQL database
-- **Firebase Storage** - Cloud file storage
-- **Cloud Functions** - Serverless backend logic
-- **Node.js** - Backend runtime
-
-## 🎨 Drawing Features
-
-- Canvas-based drawing interface
-- Real-time rendering with Web Workers for optimal performance
-- Automatic save functionality (saves every minute)
-- Cloud synchronization across devices
-- User authentication and personalized workspaces
-
-## 🔧 Development
-
-### Running in Development Mode
+### Prerequisites
 
 ```bash
-cd my-react-app
+sudo apt-get install nodejs npm
+```
+
+### Install & Run
+
+```bash
+git clone https://github.com/darthblanc/unicorn-public.git
+cd unicorn-public/my-react-app
+npm install
 npm run dev
 ```
 
-### Building for Production
+Press `o` + Enter in the terminal to open in browser.
 
-```bash
-npm run build
+### Firebase Setup
+
+1. Install Firebase CLI: `npm install -g firebase-tools`
+2. Login: `firebase login`
+3. Start emulators: `firebase emulators:start`
+4. Create `my-react-app/hidden/firebaseConfig.json` with your Firebase project config:
+
+```json
+{
+  "apiKey": "your-api-key",
+  "authDomain": "your-auth-domain",
+  "projectId": "your-project-id",
+  "storageBucket": "your-storage-bucket",
+  "messagingSenderId": "your-messaging-sender-id",
+  "appId": "your-app-id"
+}
 ```
 
-### Testing with Firebase Emulators
+---
 
-```bash
-firebase emulators:start
-```
+## Known Limitations
 
-Access the emulator UI at the URL provided in the terminal (typically `http://localhost:4000`)
+- **No multiplayer / real-time collaboration** — drawings are per-user only. The Firestore listener architecture could support this with additional conflict resolution logic, but it hasn't been implemented.
 
-## 📝 Topics & Technologies
+---
 
-- Multithreading with Web Workers
-- Progressive Web Application (PWA)
-- Firebase Authentication
-- Firestore Database
-- Firebase Storage
-- Cloud Functions
-- Modern React Development
-- Canvas API
+## Tech Stack
 
-## 🤝 Contributing
-
-This is a public version of the Unicorn Image Editor. Contributions, issues, and feature requests are welcome!
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 👥 Authors
-
-- **darthblanc** - [GitHub Profile](https://github.com/darthblanc)
-- **j-cow2** - [GitHub Profile](https://github.com/j-cow2)
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Port already in use:**
-- Kill the process using the port or specify a different port in vite.config.js
-
-**Firebase emulator errors:**
-- Ensure all required emulators are properly configured in firebase.json
-- Check that firebase-tools is up to date: `npm install -g firebase-tools`
-
-**Canvas performance issues:**
-- Verify Web Workers are properly initialized
-- Check browser console for any worker-related errors
-- Ensure your browser supports modern Canvas API features
-
-## 📞 Support
-
-For issues and questions:
-- Open an issue on [GitHub Issues](https://github.com/darthblanc/unicorn-public/issues)
-- Check existing issues for solutions
-- Contact the development team
-
-## 🔗 Links
-
-- [Repository](https://github.com/darthblanc/unicorn-public)
-- [Firebase Documentation](https://firebase.google.com/docs)
-- [React Documentation](https://react.dev)
-- [Vite Documentation](https://vitejs.dev)
+| Layer | Technology |
+|-------|-----------|
+| UI | React + Vite |
+| Canvas | Canvas API |
+| Performance | Web Workers |
+| Auth | Firebase Authentication |
+| Database | Firestore |
+| Storage | Firebase Storage |
+| Backend | Node.js |
